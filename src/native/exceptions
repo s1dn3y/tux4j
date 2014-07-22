@@ -1,0 +1,130 @@
+#ifndef _EXCEPTIONS_H_
+#define _EXCEPTIONS_H_
+
+#include <exception>
+#include <stdexcept>
+#include <string>
+
+class Exception : public std::runtime_error
+{
+protected:
+	std::string message;
+	std::string _Str;
+public:
+//	explicit Exception(const string& _S)
+//		: runtime_error(""), _Str(_S) {}
+
+	explicit Exception(const std::string& errorString= "")
+	: runtime_error(""), _Str(errorString), 
+	  message(std::string("Exception: ") + errorString) { }
+	~Exception() { }
+	const char* what() const {return message.c_str();}
+};
+
+/*
+class Exception : public std::exception
+{
+private:
+	std::string message;
+protected:
+public:
+    virtual char * name (void) =0;
+//	virtual char * getExceptionName(void)=0;// {return "Exception";}
+//	explicit Exception(const string &msg) : exception(), message(msg) {}
+	explicit Exception(const string &msg)
+	: exception()
+	{
+		message = string(this->name());
+cout << "DBG1: " <<message<< endl;
+	}
+	Exception(const string &msg, const char * file, const int & line)
+	: exception()
+	{
+		ostringstream fmt;
+		fmt << string(this->name()) << " em " << file << "(" << line << "): " << msg;
+		message = fmt.str();
+cout << "DBG2: " <<fmt.str()<< endl;
+	}
+//    virtual const char * what() const {return}
+};
+
+*/
+
+class BufferNotFieldedException : public Exception
+{
+private:
+public:
+//	char * name (void) {return "BufferNotFieldedException";}
+//	char * getExceptionName(void) {return "BufferNotFieldedException";}
+	BufferNotFieldedException(const string &msg)
+//	: Exception("BufferNotFieldedException: " + msg) {}
+	: Exception(std::string("BufferNotFieldedException: ") + msg) {}
+};
+
+class BufferHandlingException : public Exception
+{
+private:
+public:
+//	char * name (void) {return "BufferHandlingException";}
+//	char * getExceptionName(void) {return "BufferHandlingException";}
+	BufferHandlingException(const string &msg)
+//	: Exception("BufferHandlingException: " + msg) {}
+	: Exception(std::string("BufferHandlingException: ") + msg) {}
+};
+
+class InvalidNumberFormatException : public Exception
+{
+private:
+public:
+//	char * name (void) {return "InvalidNumberFormatException";}
+//	char * getExceptionName(void) {return "InvalidNumberFormatException";}
+	InvalidNumberFormatException(const string &msg)
+//	: Exception("InvalidNumberFormatException: " + msg) {}
+	: Exception(std::string("InvalidNumberFormatException: ") + msg) {}
+};
+
+class TPFatalException : public Exception
+{
+private:
+public:
+//	char * getExceptionName(void) {return "TPFatalException";}
+	TPFatalException(const string &msg)
+	: Exception(std::string("TPFatalException: ") + msg) {}
+};
+
+class TPConnectionException : public Exception
+{
+private:
+public:
+//	char * getExceptionName(void) {return "TPConnectionException";}
+	TPConnectionException(const string &msg)
+	: Exception(std::string("TPConnectionException: ") + msg) {}
+};
+
+class SignalHandlingException : public Exception
+{
+private:
+public:
+//	char * getExceptionName(void) {return "SignalHandlingException";}
+	SignalHandlingException(const string &msg)
+	: Exception(std::string("SignalHandlingException: ") + msg) {}
+	SignalHandlingException(const string &msg, const char * file, const int & line)
+	{
+		std::ostringstream fmt;
+		fmt << std::string("SignalHandlingException: ") << " em "
+			<< file << "(" << line << "): " << msg;
+		Exception(fmt.str());
+	}
+};
+
+#else
+/*
+class Exception;
+class BufferNotFieldedException;
+class BufferHandlingException;
+class InvalidNumberFormatException;
+class TPFatalException;
+class TPConnectionException;
+class SignalHandlingException;
+*/
+#endif
